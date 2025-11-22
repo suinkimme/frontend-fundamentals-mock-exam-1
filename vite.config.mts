@@ -2,6 +2,7 @@ import devServer from '@hono/vite-dev-server';
 import react from '@vitejs/plugin-react-swc';
 import { defineConfig } from 'vite';
 import tsconfigPaths from 'vite-tsconfig-paths';
+import path from 'path';
 
 export default defineConfig({
   plugins: [
@@ -12,4 +13,7 @@ export default defineConfig({
       exclude: [/^(?!\/api).*/],
     }),
   ],
+  resolve: {
+    alias: [{ find: '@', replacement: path.resolve(__dirname, 'src') }],
+  },
 });

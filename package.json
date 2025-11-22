@@ -12,7 +12,8 @@
     "react-dom": "^18",
     "react-hook-form": "^7.66.1",
     "react-router-dom": "^7.1.1",
-    "tosslib": "file:./tosslib.tgz"
+    "tosslib": "file:./tosslib.tgz",
+    "zod": "^4.1.12"
   },
   "devDependencies": {
     "@hono/vite-dev-server": "^0.18.0",

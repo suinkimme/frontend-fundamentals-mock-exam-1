@@ -17,9 +17,6 @@ export function SavingsCalculatorPage() {
       <Spacing size={8} />
 
       <SavingsCalculatorTabs />
-
-      {/* 아래는 사용자가 적금 상품을 선택하지 않고 계산 결과 탭을 선택했을 때 출력해주세요. */}
-      {/* <ListRow contents={<ListRow.Texts type="1RowTypeA" top="상품을 선택해주세요." />} /> */}
     </>
   );
 }

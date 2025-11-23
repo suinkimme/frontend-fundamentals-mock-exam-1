@@ -1,43 +1,23 @@
-import { Spacing, ListRow, Border, ListHeader, colors } from 'tosslib';
+import { Spacing, ListRow, Border, ListHeader, colors, Assets } from 'tosslib';
+import { formatNumber } from '@/utils/fomatter';
+import { SavingsProduct } from '@/apis/types/savingsProducts.types';
+import { useSavingsCalculatorStore } from '@/store/savingsCalculator';
+import SavingsSummary from './SavingsSummary';
 
-const SavingsResults = () => {
+interface Props {
+  products: SavingsProduct[];
+  selectedProductId: string;
+  onClickProduct: (productId: string) => void;
+}
+
+const SavingsResults = ({ products, selectedProductId, onClickProduct }: Props) => {
+  const sortedProducts = products.sort((a, b) => b.annualRate - a.annualRate);
+
   return (
     <>
       <Spacing size={8} />
 
-      <ListRow
-        contents={
-          <ListRow.Texts
-            type="2RowTypeA"
-            top="예상 수익 금액"
-            topProps={{ color: colors.grey600 }}
-            bottom={`1,000,000원`}
-            bottomProps={{ fontWeight: 'bold', color: colors.blue600 }}
-          />
-        }
-      />
-      <ListRow
-        contents={
-          <ListRow.Texts
-            type="2RowTypeA"
-            top="목표 금액과의 차이"
-            topProps={{ color: colors.grey600 }}
-            bottom={`-500,000원`}
-            bottomProps={{ fontWeight: 'bold', color: colors.blue600 }}
-          />
-        }
-      />
-      <ListRow
-        contents={
-          <ListRow.Texts
-            type="2RowTypeA"
-            top="추천 월 납입 금액"
-            topProps={{ color: colors.grey600 }}
-            bottom={`100,000원`}
-            bottomProps={{ fontWeight: 'bold', color: colors.blue600 }}
-          />
-        }
-      />
+      <SavingsSummary products={products} selectedProductId={selectedProductId} />
 
       <Spacing size={8} />
       <Border height={16} />
@@ -46,34 +26,24 @@ const SavingsResults = () => {
       <ListHeader title={<ListHeader.TitleParagraph fontWeight="bold">추천 상품 목록</ListHeader.TitleParagraph>} />
       <Spacing size={12} />
 
-      <ListRow
-        contents={
-          <ListRow.Texts
-            type="3RowTypeA"
-            top={'기본 정기적금'}
-            topProps={{ fontSize: 16, fontWeight: 'bold', color: colors.grey900 }}
-            middle={`연 이자율: 3.2%`}
-            middleProps={{ fontSize: 14, color: colors.blue600, fontWeight: 'medium' }}
-            bottom={`100,000원 ~ 500,000원 | 12개월`}
-            bottomProps={{ fontSize: 13, color: colors.grey600 }}
-          />
-        }
-        onClick={() => {}}
-      />
-      <ListRow
-        contents={
-          <ListRow.Texts
-            type="3RowTypeA"
-            top={'고급 정기적금'}
-            topProps={{ fontSize: 16, fontWeight: 'bold', color: colors.grey900 }}
-            middle={`연 이자율: 2.8%`}
-            middleProps={{ fontSize: 14, color: colors.blue600, fontWeight: 'medium' }}
-            bottom={`50,000원 ~ 1,000,000원 | 24개월`}
-            bottomProps={{ fontSize: 13, color: colors.grey600 }}
-          />
-        }
-        onClick={() => {}}
-      />
+      {sortedProducts.slice(0, 2).map((product, index) => (
+        <ListRow
+          key={`${product.id}-${index}}`}
+          contents={
+            <ListRow.Texts
+              type="3RowTypeA"
+              top={product.name}
+              topProps={{ fontSize: 16, fontWeight: 'bold', color: colors.grey900 }}
+              middle={`연 이자율: ${product.annualRate}%`}
+              middleProps={{ fontSize: 14, color: colors.blue600, fontWeight: 'medium' }}
+              bottom={`${formatNumber(product.minMonthlyAmount)}원 ~ ${formatNumber(product.maxMonthlyAmount)}원 | ${product.availableTerms}개월`}
+              bottomProps={{ fontSize: 13, color: colors.grey600 }}
+            />
+          }
+          right={selectedProductId === product.id && <Assets.Icon name="icon-check-circle-green" />}
+          onClick={() => onClickProduct(product.id)}
+        />
+      ))}
 
       <Spacing size={40} />
     </>

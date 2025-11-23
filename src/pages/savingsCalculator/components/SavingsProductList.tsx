@@ -1,5 +1,5 @@
 import { Assets, ListRow, colors } from 'tosslib';
-import useSavingsProducts from '../hooks/useSavingsProdcuts';
+import useSavingsProducts from '../hooks/useSavingsProducts';
 
 const SavingsProductList = () => {
   const { data } = useSavingsProducts();

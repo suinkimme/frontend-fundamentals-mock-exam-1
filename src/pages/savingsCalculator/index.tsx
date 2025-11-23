@@ -1,17 +1,4 @@
-import { useState, useEffect } from 'react';
-import {
-  Assets,
-  Border,
-  colors,
-  ListHeader,
-  ListRow,
-  NavigationBar,
-  SelectBottomSheet,
-  Spacing,
-  Tab,
-  TextField,
-  http,
-} from 'tosslib';
+import { Border, NavigationBar, Spacing } from 'tosslib';
 import SavingsCalculatorForm from './components/SavingsCalculatorForm';
 import SavingsCalculatorTabs from './components/SavingsCalculatorTabs';
 

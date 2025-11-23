@@ -1,9 +1,31 @@
 import { Assets, ListRow, colors } from 'tosslib';
 import useSavingsProducts from '../hooks/useSavingsProducts';
+import { useSavingsCalculatorStore } from '@/store/savingsCalculator';
+import { SavingsProducts } from '@/apis/types/savingsProducts.types';
+
+const isSamePeriod = (productPeriod: number, selectedPeriod: number) => productPeriod === selectedPeriod;
+const hasTargetPeriod = (products: SavingsProduct[], targetPeriod: number) =>
+  products.some(product => isSamePeriod(product.availableTerms, targetPeriod));
+
+const isMonthlyAmountInRange = (monthlyAmount: number, minMonthlyAmount: number, maxMonthlyAmount: number) =>
+  monthlyAmount >= minMonthlyAmount && monthlyAmount <= maxMonthlyAmount;
 
 const SavingsProductList = () => {
+  const { amount, monthly, period } = useSavingsCalculatorStore();
   const { data } = useSavingsProducts();
-  const products = data; // reduce 예정
+
+  const products = data?.filter(product => {
+    const hasInput = amount > 0 || monthly > 0;
+
+    if (!hasInput) {
+      return true;
+    }
+
+    return (
+      hasTargetPeriod(data, period) &&
+      isMonthlyAmountInRange(monthly, product.minMonthlyAmount, product.maxMonthlyAmount)
+    );
+  });
 
   return (
     <>

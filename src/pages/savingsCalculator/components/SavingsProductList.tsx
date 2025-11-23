@@ -1,7 +1,8 @@
 import { Assets, ListRow, colors } from 'tosslib';
 import useSavingsProducts from '../hooks/useSavingsProducts';
 import { useSavingsCalculatorStore } from '@/store/savingsCalculator';
-import { SavingsProducts } from '@/apis/types/savingsProducts.types';
+import { SavingsProduct } from '@/apis/types/savingsProducts.types';
+import { formatNumber } from '@/utils/fomatter';
 
 const isSamePeriod = (productPeriod: number, selectedPeriod: number) => productPeriod === selectedPeriod;
 const hasTargetPeriod = (products: SavingsProduct[], targetPeriod: number) =>
@@ -18,11 +19,12 @@ const SavingsProductList = () => {
     const hasInput = amount > 0 || monthly > 0;
 
     if (!hasInput) {
-      return true;
+      return isSamePeriod(product.availableTerms, period);
     }
 
     return (
       hasTargetPeriod(data, period) &&
+      isSamePeriod(product.availableTerms, period) &&
       isMonthlyAmountInRange(monthly, product.minMonthlyAmount, product.maxMonthlyAmount)
     );
   });
@@ -35,11 +37,11 @@ const SavingsProductList = () => {
           contents={
             <ListRow.Texts
               type="3RowTypeA"
-              top={'기본 정기적금'}
+              top={product.name}
               topProps={{ fontSize: 16, fontWeight: 'bold', color: colors.grey900 }}
-              middle={'연 이자율: 3.2%'}
+              middle={`연 이자율: ${product.annualRate}%`}
               middleProps={{ fontSize: 14, color: colors.blue600, fontWeight: 'medium' }}
-              bottom={'100,000원 ~ 500,000원 | 12개월'}
+              bottom={`${formatNumber(product.minMonthlyAmount)}원 ~ ${formatNumber(product.maxMonthlyAmount)}원 | ${product.availableTerms}개월`}
               bottomProps={{ fontSize: 13, color: colors.grey600 }}
             />
           }

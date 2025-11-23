@@ -11,7 +11,12 @@ const hasTargetPeriod = (products: SavingsProduct[], targetPeriod: number) =>
 const isMonthlyAmountInRange = (monthlyAmount: number, minMonthlyAmount: number, maxMonthlyAmount: number) =>
   monthlyAmount >= minMonthlyAmount && monthlyAmount <= maxMonthlyAmount;
 
-const SavingsProductList = () => {
+interface Props {
+  selectedProductId: string | null;
+  onClickProduct: (productId: string) => void;
+}
+
+const SavingsProductList = ({ selectedProductId, onClickProduct }: Props) => {
   const { amount, monthly, period } = useSavingsCalculatorStore();
   const { data } = useSavingsProducts();
 
@@ -45,8 +50,8 @@ const SavingsProductList = () => {
               bottomProps={{ fontSize: 13, color: colors.grey600 }}
             />
           }
-          // right={<Assets.Icon name="icon-check-circle-green" />}
-          onClick={() => {}}
+          right={selectedProductId === product.id && <Assets.Icon name="icon-check-circle-green" />}
+          onClick={() => onClickProduct(product.id)}
         />
       ))}
     </>

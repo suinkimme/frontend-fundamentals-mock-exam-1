@@ -11,6 +11,8 @@ const isTabType = (value: string): value is TabType => {
 
 const SavingsCalculatorTabs = () => {
   const [selectedTab, setSelectedTab] = useState<TabType>('products');
+  const [selectedProductId, setSelectedProductId] = useState<string | null>(null);
+
   return (
     <>
       <Tab
@@ -27,7 +29,14 @@ const SavingsCalculatorTabs = () => {
           계산 결과
         </Tab.Item>
       </Tab>
-      {selectedTab === 'products' && <SavingsProductList />}
+      {selectedTab === 'products' && (
+        <SavingsProductList
+          selectedProductId={selectedProductId}
+          onClickProduct={productId => {
+            setSelectedProductId(productId);
+          }}
+        />
+      )}
       {selectedTab === 'results' && <SavingsResults />}
     </>
   );

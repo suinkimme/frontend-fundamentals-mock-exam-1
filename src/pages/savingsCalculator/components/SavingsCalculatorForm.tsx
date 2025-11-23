@@ -12,7 +12,7 @@ const SavingsCalculatorForm = () => {
         label="목표 금액"
         placeholder="목표 금액을 입력하세요"
         suffix="원"
-        value={amount ? formatNumber(amount) : null}
+        value={amount ? formatNumber(amount) : ''}
         onChange={e => {
           setAmount(Number(e.target.value.replace(/[^0-9]/g, '')));
         }}
@@ -22,7 +22,7 @@ const SavingsCalculatorForm = () => {
         label="월 납입액"
         placeholder="희망 월 납입액을 입력하세요"
         suffix="원"
-        value={monthly ? formatNumber(monthly) : null}
+        value={monthly ? formatNumber(monthly) : ''}
         onChange={e => {
           setMonthly(Number(e.target.value.replace(/[^0-9]/g, '')));
         }}
